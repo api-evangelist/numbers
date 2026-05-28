@@ -1,0 +1,32 @@
+aid: numbers
+name: Numbers
+description: "Number of the day, random number, number facts and anything else you want to do with numbers"
+url: https://math.tools/api/numbers/
+specificationVersion: '0.20'
+created: '2026-05-28'
+modified: '2026-05-28'
+x-source: public-apis/public-apis
+x-category: "Science & Math"
+x-tier: 3
+x-tier-reason: bulk-registered-from-public-apis
+tags:
+  - Science And Math
+  - Public APIs
+apis:
+  - name: Numbers
+    description: "Number of the day, random number, number facts and anything else you want to do with numbers"
+    humanURL: https://math.tools/api/numbers/
+    baseURL: https://math.tools/api/numbers/
+    tags:
+      - Science And Math
+    properties:
+      - type: Documentation
+        url: https://math.tools/api/numbers/
+common:
+  - type: Website
+    url: https://math.tools/api/numbers/
+  - type: PublicAPIsListing
+    url: https://github.com/public-apis/public-apis
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

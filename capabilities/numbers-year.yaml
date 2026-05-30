@@ -1,0 +1,201 @@
+naftiko: "1.0.0-alpha2"
+
+info:
+  label: "Numbers API — Year"
+  description: >-
+    Numbers API — Year. 2 operations. Lead operation: return a historical fact
+    about a specific calendar year (`/{year}/year`), or pull a random year
+    fact (`/random/year`). Self-contained Naftiko capability covering one
+    Numbers API business surface.
+  tags:
+    - Numbers API
+    - Year
+    - History
+  created: "2026-05-30"
+  modified: "2026-05-30"
+
+binds: []
+
+capability:
+
+  consumes:
+    - type: http
+      namespace: "numbers-year"
+      baseUri: "http://numbersapi.com"
+      description: "Numbers API — Year business capability. Self-contained, no shared references."
+      resources:
+        - name: "year-year"
+          path: "/{year}/year"
+          operations:
+            - name: "getYearFact"
+              method: GET
+              description: "Return a historical fact about a specific calendar year."
+              inputParameters:
+                - name: "year"
+                  in: path
+                  type: integer
+                  required: true
+                  description: "Year number; negative integers represent BC."
+                - name: "json"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return the fact as a JSON object."
+                - name: "fragment"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return as a sentence fragment."
+                - name: "notfound"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Not-found behavior."
+                - name: "default"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Custom default message."
+                - name: "callback"
+                  in: query
+                  type: string
+                  required: false
+                  description: "JSONP callback."
+                - name: "write"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Wrap response in document.write()."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: "random-year"
+          path: "/random/year"
+          operations:
+            - name: "getRandomYearFact"
+              method: GET
+              description: "Return a random year fact."
+              inputParameters:
+                - name: "json"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return the fact as a JSON object."
+                - name: "fragment"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return as a sentence fragment."
+                - name: "notfound"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Not-found behavior."
+                - name: "default"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Custom default message."
+                - name: "callback"
+                  in: query
+                  type: string
+                  required: false
+                  description: "JSONP callback."
+                - name: "write"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Wrap response in document.write()."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      namespace: "numbers-year-rest"
+      port: 8080
+      description: "REST adapter for Numbers API — Year. One Spectral-compliant resource per consumed operation, prefixed with /v1."
+      resources:
+        - path: "/v1/numbers/years/{year}"
+          name: "year-year"
+          description: "REST surface for year facts."
+          operations:
+            - method: GET
+              name: "getYearFact"
+              description: "Return a historical fact about a specific calendar year."
+              call: "numbers-year.getYearFact"
+              with:
+                year: "rest.year"
+                json: "rest.json"
+                fragment: "rest.fragment"
+                notfound: "rest.notfound"
+                default: "rest.default"
+                callback: "rest.callback"
+                write: "rest.write"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: "/v1/numbers/years/random"
+          name: "random-year"
+          description: "REST surface for random year facts."
+          operations:
+            - method: GET
+              name: "getRandomYearFact"
+              description: "Return a random year fact."
+              call: "numbers-year.getRandomYearFact"
+              with:
+                json: "rest.json"
+                fragment: "rest.fragment"
+                notfound: "rest.notfound"
+                default: "rest.default"
+                callback: "rest.callback"
+                write: "rest.write"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      namespace: "numbers-year-mcp"
+      port: 9090
+      transport: http
+      description: "MCP adapter for Numbers API — Year. One tool per consumed operation, routed inline through this capability's consumes block."
+      tools:
+        - name: "get-year-fact"
+          description: "Return a historical fact about a specific calendar year."
+          hints:
+            readOnly: true
+            destructive: false
+            idempotent: true
+          call: "numbers-year.getYearFact"
+          with:
+            year: "tools.year"
+            json: "tools.json"
+            fragment: "tools.fragment"
+            notfound: "tools.notfound"
+            default: "tools.default"
+            callback: "tools.callback"
+            write: "tools.write"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: "get-random-year-fact"
+          description: "Return a random year fact."
+          hints:
+            readOnly: true
+            destructive: false
+            idempotent: true
+          call: "numbers-year.getRandomYearFact"
+          with:
+            json: "tools.json"
+            fragment: "tools.fragment"
+            notfound: "tools.notfound"
+            default: "tools.default"
+            callback: "tools.callback"
+            write: "tools.write"
+          outputParameters:
+            - type: object
+              mapping: "$."

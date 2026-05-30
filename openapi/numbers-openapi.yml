@@ -1,0 +1,676 @@
+openapi: 3.0.3
+info:
+  title: Numbers API
+  version: '1.0.0'
+  description: >-
+    Numbers API by David Hu and Mack Duan — a free, community-contributed HTTP
+    API for interesting facts about numbers. Returns trivia, math, date, and
+    year facts as plain text or JSON. Supports random numbers, batches/ranges,
+    JSONP callbacks, document.write embedding, sentence-fragment responses,
+    and configurable not-found behavior.
+  contact:
+    name: Numbers API
+    email: numbersapi@gmail.com
+    url: http://numbersapi.com/
+  license:
+    name: Free for any use (community API)
+    url: http://numbersapi.com/
+servers:
+  - url: http://numbersapi.com
+    description: Numbers API production endpoint.
+tags:
+  - name: Trivia
+    description: Trivia facts about integers.
+  - name: Math
+    description: Mathematical properties of integers.
+  - name: Date
+    description: Historical facts associated with a day of the year.
+  - name: Year
+    description: Historical facts associated with a year.
+  - name: Batch
+    description: Multiple facts returned in a single request as a JSON map.
+paths:
+  /{number}:
+    get:
+      operationId: getTrivia
+      summary: Numbers API Get Trivia Fact
+      description: >-
+        Return a trivia fact about the supplied integer. This is the default
+        endpoint when no `type` segment is given. Use the keyword `random`
+        to receive a random trivia fact.
+      tags:
+        - Trivia
+      parameters:
+        - $ref: '#/components/parameters/NumberPath'
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Min'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Trivia fact, returned as plain text by default or JSON when `json` is set.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 42 is the number of laws of cricket.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetTrivia200Example:
+                  summary: Default getTrivia 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 42 is the number of laws of cricket.
+                    found: true
+                    number: 42
+                    type: trivia
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /{number}/trivia:
+    get:
+      operationId: getTriviaFact
+      summary: Numbers API Get Trivia Fact Explicit
+      description: >-
+        Return a trivia fact about the supplied integer. Equivalent to
+        `/{number}` but with an explicit `trivia` type segment.
+      tags:
+        - Trivia
+      parameters:
+        - $ref: '#/components/parameters/NumberPath'
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Min'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Trivia fact, returned as plain text by default or JSON when `json` is set.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 23 is the number of times Julius Caesar was stabbed.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetTriviaFact200Example:
+                  summary: Default getTriviaFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 23 is the number of times Julius Caesar was stabbed.
+                    found: true
+                    number: 23
+                    type: trivia
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /{number}/math:
+    get:
+      operationId: getMathFact
+      summary: Numbers API Get Math Fact
+      description: >-
+        Return a mathematical fact about the supplied integer. Use the keyword
+        `random` to receive a random math fact.
+      tags:
+        - Math
+      parameters:
+        - $ref: '#/components/parameters/NumberPath'
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Min'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Math fact, returned as plain text by default or JSON when `json` is set.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 42 is the 5th Catalan number.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetMathFact200Example:
+                  summary: Default getMathFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 42 is the 5th Catalan number.
+                    found: true
+                    number: 42
+                    type: math
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /random/math:
+    get:
+      operationId: getRandomMathFact
+      summary: Numbers API Get Random Math Fact
+      description: >-
+        Return a random mathematical fact. Equivalent to `/random/math`;
+        an alias for `getMathFact` with `number=random`. Supports `min` and
+        `max` to bound the random integer.
+      tags:
+        - Math
+      parameters:
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Min'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Random math fact.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 7 is the lowest dimension of a known exotic sphere.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetRandomMathFact200Example:
+                  summary: Default getRandomMathFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 7 is the lowest dimension of a known exotic sphere.
+                    found: true
+                    number: 7
+                    type: math
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /random/trivia:
+    get:
+      operationId: getRandomTriviaFact
+      summary: Numbers API Get Random Trivia Fact
+      description: >-
+        Return a random trivia fact. Supports `min` and `max` to bound the
+        random integer.
+      tags:
+        - Trivia
+      parameters:
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Min'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Random trivia fact.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 13 is the number of provinces and territories in Canada.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetRandomTriviaFact200Example:
+                  summary: Default getRandomTriviaFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 13 is the number of provinces and territories in Canada.
+                    found: true
+                    number: 13
+                    type: trivia
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /random/date:
+    get:
+      operationId: getRandomDateFact
+      summary: Numbers API Get Random Date Fact
+      description: >-
+        Return a random date fact (a fact tied to a day of year, returned with
+        the corresponding `month/day`).
+      tags:
+        - Date
+      parameters:
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Random date fact.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: April 1 is the day in 1976 that Apple Computer Company is founded by Steve Jobs, Steve Wozniak, and Ronald Wayne.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetRandomDateFact200Example:
+                  summary: Default getRandomDateFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: April 1 is the day in 1976 that Apple Computer Company is founded by Steve Jobs, Steve Wozniak, and Ronald Wayne.
+                    found: true
+                    number: 92
+                    type: date
+                    year: '1976'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /random/year:
+    get:
+      operationId: getRandomYearFact
+      summary: Numbers API Get Random Year Fact
+      description: >-
+        Return a random year fact (a fact tied to a calendar year). The
+        response includes the year as `number` and, when applicable, an
+        associated `date` string.
+      tags:
+        - Year
+      parameters:
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Random year fact.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 2012 is the year that the century's second and last solar transit of Venus occurs on June 6.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetRandomYearFact200Example:
+                  summary: Default getRandomYearFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 2012 is the year that the century's second and last solar transit of Venus occurs on June 6.
+                    found: true
+                    number: 2012
+                    type: year
+                    date: June 6
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /{month}/{day}/date:
+    get:
+      operationId: getDateFact
+      summary: Numbers API Get Date Fact
+      description: >-
+        Return a historical fact about a specific day of the year, supplied as
+        a `month/day` path (e.g. `2/29`, `04/1`). The keyword `random` may be
+        used in place of `month/day` to get a random date fact, in which case
+        the URL is `/random/date`.
+      tags:
+        - Date
+      parameters:
+        - name: month
+          in: path
+          required: true
+          description: Month number, 1-12 (zero padding is accepted, e.g. `04`).
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+          example: 2
+        - name: day
+          in: path
+          required: true
+          description: Day-of-month number, 1-31 (zero padding is accepted, e.g. `09`).
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 31
+          example: 29
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Date fact for the supplied month/day.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: February 29 is the day in 1504 that Christopher Columbus uses his knowledge of a lunar eclipse to convince Native Americans to provide him with supplies.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetDateFact200Example:
+                  summary: Default getDateFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: February 29 is the day in 1504 that Christopher Columbus uses his knowledge of a lunar eclipse to convince Native Americans to provide him with supplies.
+                    found: true
+                    number: 60
+                    type: date
+                    year: '1504'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /{year}/year:
+    get:
+      operationId: getYearFact
+      summary: Numbers API Get Year Fact
+      description: >-
+        Return a historical fact about a specific calendar year. Negative
+        integers represent BC years. The keyword `random` may be used in place
+        of `year` to get a random year fact, in which case the URL is
+        `/random/year`.
+      tags:
+        - Year
+      parameters:
+        - name: year
+          in: path
+          required: true
+          description: Year number; negative integers represent BC.
+          schema:
+            type: integer
+          example: 1969
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+        - $ref: '#/components/parameters/Callback'
+        - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Year fact.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 1969 is the year that an estimated 500 million people worldwide watch Neil Armstrong take his historic first steps on the Moon.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetYearFact200Example:
+                  summary: Default getYearFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 1969 is the year that an estimated 500 million people worldwide watch Neil Armstrong take his historic first steps on the Moon.
+                    found: true
+                    number: 1969
+                    type: year
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /{numberRange}/batch:
+    get:
+      operationId: getBatchFacts
+      summary: Numbers API Get Batch Facts
+      description: >-
+        Return facts for multiple numbers in a single response. The
+        `numberRange` path segment is a comma-separated list of integers and
+        `min..max` ranges (e.g. `1..3,10`). Responses are always a JSON map
+        from number to fact, of at most 100 numbers. Although the underlying
+        URL pattern is `/{numberRange}` (or `/{numberRange}/{type}`), this
+        operation models the batch case explicitly for tooling clarity.
+      tags:
+        - Batch
+      parameters:
+        - name: numberRange
+          in: path
+          required: true
+          description: Comma-separated list of integers and inclusive `min..max` ranges.
+          schema:
+            type: string
+          example: 1..3,10
+        - name: type
+          in: query
+          required: false
+          description: Fact type to apply to all numbers in the batch.
+          schema:
+            type: string
+            enum:
+              - trivia
+              - math
+              - year
+          example: trivia
+        - $ref: '#/components/parameters/Json'
+        - $ref: '#/components/parameters/Fragment'
+        - $ref: '#/components/parameters/Notfound'
+        - $ref: '#/components/parameters/Default'
+      responses:
+        '200':
+          description: >-
+            JSON map keyed by number. When `json` is set, each value is a
+            `Fact` object; otherwise each value is the plain-text fact string.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchFacts'
+              examples:
+                GetBatchFacts200Example:
+                  summary: Default getBatchFacts 200 response
+                  x-microcks-default: true
+                  value:
+                    '1': 1 is the number of dimensions of a line.
+                    '2': 2 is the number of polynucleotide strands in a DNA double helix.
+                    '3': 3 is the number of sets needed to be won to win the whole match in volleyball.
+                    '10': 10 is the highest score possible in Olympics gymnastics competitions.
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  parameters:
+    NumberPath:
+      name: number
+      in: path
+      required: true
+      description: >-
+        Integer to look up, or the keyword `random` to receive a random
+        available fact.
+      schema:
+        type: string
+        pattern: '^(random|-?\d+)$'
+      example: '42'
+    Json:
+      name: json
+      in: query
+      required: false
+      description: >-
+        Return the fact as a JSON object (`{ text, found, number, type,
+        date?, year? }`) instead of plain text. Equivalent to setting the
+        request `Content-Type: application/json` header.
+      schema:
+        type: boolean
+      example: true
+    Fragment:
+      name: fragment
+      in: query
+      required: false
+      description: >-
+        Return the fact as a sentence fragment (lowercase, no terminal
+        punctuation) suitable for embedding in a larger sentence.
+      schema:
+        type: boolean
+      example: true
+    Notfound:
+      name: notfound
+      in: query
+      required: false
+      description: >-
+        Behavior when no fact exists for the requested number. `default`
+        returns a generic message (overridable with `default`), `floor` rounds
+        down to the nearest number with a fact, and `ceil` rounds up.
+      schema:
+        type: string
+        enum:
+          - default
+          - floor
+          - ceil
+        default: default
+      example: floor
+    Default:
+      name: default
+      in: query
+      required: false
+      description: Custom message to return when no fact exists for the requested number.
+      schema:
+        type: string
+      example: Boring number is boring.
+    Min:
+      name: min
+      in: query
+      required: false
+      description: >-
+        Minimum value (inclusive) for random-number selection. Only meaningful
+        when `number=random`.
+      schema:
+        type: integer
+      example: 10
+    Max:
+      name: max
+      in: query
+      required: false
+      description: >-
+        Maximum value (inclusive) for random-number selection. Only meaningful
+        when `number=random`.
+      schema:
+        type: integer
+      example: 20
+    Callback:
+      name: callback
+      in: query
+      required: false
+      description: >-
+        JSONP callback function name. The response is wrapped as
+        `<callback>("<fact>")`.
+      schema:
+        type: string
+      example: showNumber
+    Write:
+      name: write
+      in: query
+      required: false
+      description: >-
+        Wrap the response in `document.write("<fact>")` so a single
+        `<script src="...">` tag can render the fact inline. Equivalent to
+        `callback=document.write`.
+      schema:
+        type: boolean
+      example: true
+  responses:
+    NotFound:
+      description: >-
+        No fact was found for the requested number. The body still contains a
+        plain-text or JSON message; the HTTP status reflects the lookup
+        outcome only when `notfound` is left at its default.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: 314159265358979 is a boring number.
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Fact'
+          examples:
+            NotFoundExample:
+              summary: Default 404 response
+              x-microcks-default: true
+              value:
+                text: 314159265358979 is a boring number.
+                found: false
+                number: 314159265358979
+                type: trivia
+  schemas:
+    Fact:
+      type: object
+      description: A single Numbers API fact returned in JSON form.
+      required:
+        - text
+        - number
+        - found
+        - type
+      properties:
+        text:
+          type: string
+          description: Plain-text fact about the number.
+          example: 42 is the result given by Google and Bing for the query "the answer to life the universe and everything".
+        number:
+          type: number
+          description: >-
+            Floating-point number the fact pertains to. For date facts, this
+            is the 1-indexed day of a leap year (e.g. 61 is March 1).
+          example: 42
+        found:
+          type: boolean
+          description: Whether a real fact was found for the requested number.
+          example: true
+        type:
+          type: string
+          description: Category of the returned fact.
+          enum:
+            - trivia
+            - math
+            - date
+            - year
+          example: trivia
+        date:
+          type: string
+          description: Day of year associated with year facts, as a string (e.g. `June 6`).
+          example: June 6
+        year:
+          type: string
+          description: Year associated with date facts, as a string (e.g. `1969`).
+          example: '1969'
+    BatchFacts:
+      type: object
+      description: >-
+        JSON map of number-keyed facts returned by a batch request. Each value
+        is either a plain-text fact (default) or a `Fact` object (when `json`
+        is set).
+      additionalProperties:
+        oneOf:
+          - type: string
+          - $ref: '#/components/schemas/Fact'
+      example:
+        '1': 1 is the number of dimensions of a line.
+        '2': 2 is the number of polynucleotide strands in a DNA double helix.
+        '3': 3 is the number of sets needed to be won to win the whole match in volleyball.
+        '10': 10 is the highest score possible in Olympics gymnastics competitions.

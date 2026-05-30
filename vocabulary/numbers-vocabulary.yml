@@ -1,0 +1,245 @@
+vocabulary: "1.0.0"
+
+info:
+  provider: "Numbers API"
+  description: >-
+    Unified vocabulary for the Numbers API (numbersapi.com). Maps operational
+    OpenAPI dimensions (paths, parameters, schemas, fact types) to Naftiko
+    capability dimensions (workflows, personas, MCP tools).
+  created: "2026-05-30"
+  modified: "2026-05-30"
+
+# ── OPERATIONAL DIMENSION (from OpenAPI) ────────────────────────────────
+operational:
+  apis:
+    - name: "Numbers API"
+      namespace: "numbers"
+      version: "1.0.0"
+      baseUrl: "http://numbersapi.com"
+      status: active
+
+  resources:
+    - name: trivia
+      description: "Trivia facts about integers."
+      api: "Numbers API"
+      actions: [get, getRandom]
+    - name: math
+      description: "Mathematical properties of integers."
+      api: "Numbers API"
+      actions: [get, getRandom]
+    - name: date
+      description: "Historical facts associated with a day of the year."
+      api: "Numbers API"
+      actions: [get, getRandom]
+    - name: year
+      description: "Historical facts associated with a calendar year."
+      api: "Numbers API"
+      actions: [get, getRandom]
+    - name: batch
+      description: "Facts for multiple numbers in one response (up to 100)."
+      api: "Numbers API"
+      actions: [get]
+
+  actions:
+    - name: get
+      httpMethod: GET
+      pattern: read
+      description: "Fetch a fact for a specific number/year/date."
+    - name: getRandom
+      httpMethod: GET
+      pattern: read
+      description: "Fetch a random fact of the given type."
+
+  schemas:
+    core:
+      - name: Fact
+        description: "A single fact: { text, number, found, type, date?, year? }."
+        properties: [text, number, found, type, date, year]
+      - name: BatchFacts
+        description: "JSON map keyed by number with string or Fact values."
+        properties: []
+
+  parameters:
+    pagination: []
+    identifiers:
+      - name: number
+        in: path
+        description: "Integer to look up, or the keyword `random`."
+      - name: month
+        in: path
+        description: "Month, 1-12."
+      - name: day
+        in: path
+        description: "Day of month, 1-31."
+      - name: year
+        in: path
+        description: "Year (negative integers represent BC)."
+      - name: numberRange
+        in: path
+        description: "Comma-separated integers and `min..max` ranges."
+    filters:
+      - name: type
+        in: query
+        description: "Fact type for batch requests (trivia, math, year)."
+      - name: min
+        in: query
+        description: "Lower bound for random selection."
+      - name: max
+        in: query
+        description: "Upper bound for random selection."
+      - name: notfound
+        in: query
+        description: "Behavior when no fact exists (default, floor, ceil)."
+      - name: default
+        in: query
+        description: "Custom message when no fact exists."
+    formatting:
+      - name: json
+        in: query
+        description: "Return JSON instead of plain text."
+      - name: fragment
+        in: query
+        description: "Return as a lowercase sentence fragment."
+      - name: callback
+        in: query
+        description: "JSONP callback function name."
+      - name: write
+        in: query
+        description: "Wrap response in document.write()."
+
+  enums:
+    factTypes:
+      - trivia
+      - math
+      - date
+      - year
+    notfoundBehaviors:
+      - default
+      - floor
+      - ceil
+
+  authentication:
+    schemes: []
+    description: "Numbers API is a free public API with no authentication."
+
+# ── CAPABILITY DIMENSION (from Naftiko) ─────────────────────────────────
+capability:
+  workflows:
+    - name: "Numbers API — Trivia"
+      file: capabilities/numbers-trivia.yaml
+      description: "Trivia fact lookup and random trivia."
+      api: "Numbers API"
+      toolCount: 3
+      personas: [contentCreator, developer]
+      domains: [Trivia]
+    - name: "Numbers API — Math"
+      file: capabilities/numbers-math.yaml
+      description: "Math fact lookup and random math."
+      api: "Numbers API"
+      toolCount: 2
+      personas: [educator, developer]
+      domains: [Math]
+    - name: "Numbers API — Date"
+      file: capabilities/numbers-date.yaml
+      description: "Day-of-year historical facts."
+      api: "Numbers API"
+      toolCount: 2
+      personas: [contentCreator, educator]
+      domains: [Date]
+    - name: "Numbers API — Year"
+      file: capabilities/numbers-year.yaml
+      description: "Calendar-year historical facts."
+      api: "Numbers API"
+      toolCount: 2
+      personas: [contentCreator, educator]
+      domains: [Year]
+    - name: "Numbers API — Batch"
+      file: capabilities/numbers-batch.yaml
+      description: "Batch fact lookups for multiple numbers in one call."
+      api: "Numbers API"
+      toolCount: 1
+      personas: [developer]
+      domains: [Batch]
+
+  personas:
+    - id: contentCreator
+      name: Content Creator
+      description: "Writes copy, dashboards, or marketing content that benefits from living, contextual facts about numbers."
+      workflows: [numbers-trivia, numbers-date, numbers-year]
+    - id: educator
+      name: Educator
+      description: "Surfaces mathematical and historical facts in classrooms, worksheets, or tutoring tools."
+      workflows: [numbers-math, numbers-date, numbers-year]
+    - id: developer
+      name: Developer
+      description: "Embeds free, no-auth fact lookups in demos, tutorials, chatbots, and side projects."
+      workflows: [numbers-trivia, numbers-math, numbers-batch]
+
+  domains:
+    - name: Trivia
+      description: "Anecdotal facts about integers."
+    - name: Math
+      description: "Mathematical properties of integers."
+    - name: Date
+      description: "Historical facts for day-of-year combinations."
+    - name: Year
+      description: "Historical facts for calendar years."
+    - name: Batch
+      description: "Bulk fact retrieval."
+
+  namespaces:
+    - name: numbers-trivia
+      consumed: numbers-trivia
+      rest: numbers-trivia-rest
+      mcp: numbers-trivia-mcp
+      restPort: 8080
+      mcpPort: 9090
+    - name: numbers-math
+      consumed: numbers-math
+      rest: numbers-math-rest
+      mcp: numbers-math-mcp
+      restPort: 8080
+      mcpPort: 9090
+    - name: numbers-date
+      consumed: numbers-date
+      rest: numbers-date-rest
+      mcp: numbers-date-mcp
+      restPort: 8080
+      mcpPort: 9090
+    - name: numbers-year
+      consumed: numbers-year
+      rest: numbers-year-rest
+      mcp: numbers-year-mcp
+      restPort: 8080
+      mcpPort: 9090
+    - name: numbers-batch
+      consumed: numbers-batch
+      rest: numbers-batch-rest
+      mcp: numbers-batch-mcp
+      restPort: 8080
+      mcpPort: 9090
+
+  binds: []
+
+# ── CROSS-REFERENCE ──────────────────────────────────────────────────────
+crossReference:
+  - resource: trivia
+    operations: [getTrivia, getTriviaFact, getRandomTriviaFact]
+    workflows: ["Numbers API — Trivia"]
+    personas: [contentCreator, developer]
+  - resource: math
+    operations: [getMathFact, getRandomMathFact]
+    workflows: ["Numbers API — Math"]
+    personas: [educator, developer]
+  - resource: date
+    operations: [getDateFact, getRandomDateFact]
+    workflows: ["Numbers API — Date"]
+    personas: [contentCreator, educator]
+  - resource: year
+    operations: [getYearFact, getRandomYearFact]
+    workflows: ["Numbers API — Year"]
+    personas: [contentCreator, educator]
+  - resource: batch
+    operations: [getBatchFacts]
+    workflows: ["Numbers API — Batch"]
+    personas: [developer]

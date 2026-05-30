@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/numbers/refs/heads/main/json-structure/numbers-batch-facts-structure.json",
+  "name": "BatchFacts",
+  "description": "JSON map of number-keyed facts returned by a Numbers API batch request. Each value is either a plain-text fact string or a Fact object.",
+  "type": "object",
+  "additionalProperties": {
+    "oneOf": [
+      { "type": "string" },
+      { "$ref": "https://raw.githubusercontent.com/api-evangelist/numbers/refs/heads/main/json-structure/numbers-fact-structure.json" }
+    ]
+  }
+}

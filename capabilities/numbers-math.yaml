@@ -1,0 +1,229 @@
+naftiko: "1.0.0-alpha2"
+
+info:
+  label: "Numbers API — Math"
+  description: >-
+    Numbers API — Math. 2 operations. Lead operation: return a mathematical
+    property of a supplied integer (`/{number}/math`), with a random variant
+    (`/random/math`). Self-contained Naftiko capability covering one
+    Numbers API business surface.
+  tags:
+    - Numbers API
+    - Math
+    - Numbers
+  created: "2026-05-30"
+  modified: "2026-05-30"
+
+binds: []
+
+capability:
+
+  consumes:
+    - type: http
+      namespace: "numbers-math"
+      baseUri: "http://numbersapi.com"
+      description: "Numbers API — Math business capability. Self-contained, no shared references."
+      resources:
+        - name: "number-math"
+          path: "/{number}/math"
+          operations:
+            - name: "getMathFact"
+              method: GET
+              description: "Return a mathematical fact about a supplied integer."
+              inputParameters:
+                - name: "number"
+                  in: path
+                  type: string
+                  required: true
+                  description: "Integer to look up, or the keyword `random`."
+                - name: "json"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return the fact as a JSON object."
+                - name: "fragment"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return as a sentence fragment."
+                - name: "notfound"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Behavior when no fact exists: default, floor, ceil."
+                - name: "default"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Custom default message."
+                - name: "min"
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Lower bound for random selection."
+                - name: "max"
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Upper bound for random selection."
+                - name: "callback"
+                  in: query
+                  type: string
+                  required: false
+                  description: "JSONP callback function name."
+                - name: "write"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Wrap response in document.write()."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: "random-math"
+          path: "/random/math"
+          operations:
+            - name: "getRandomMathFact"
+              method: GET
+              description: "Return a random mathematical fact."
+              inputParameters:
+                - name: "json"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return the fact as a JSON object."
+                - name: "fragment"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return as a sentence fragment."
+                - name: "notfound"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Not-found behavior."
+                - name: "default"
+                  in: query
+                  type: string
+                  required: false
+                  description: "Custom default message."
+                - name: "min"
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Lower bound for random selection."
+                - name: "max"
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Upper bound for random selection."
+                - name: "callback"
+                  in: query
+                  type: string
+                  required: false
+                  description: "JSONP callback."
+                - name: "write"
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Wrap response in document.write()."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      namespace: "numbers-math-rest"
+      port: 8080
+      description: "REST adapter for Numbers API — Math. One Spectral-compliant resource per consumed operation, prefixed with /v1."
+      resources:
+        - path: "/v1/numbers/{number}/math"
+          name: "number-math"
+          description: "REST surface for math facts about a number."
+          operations:
+            - method: GET
+              name: "getMathFact"
+              description: "Return a mathematical fact about a supplied integer."
+              call: "numbers-math.getMathFact"
+              with:
+                number: "rest.number"
+                json: "rest.json"
+                fragment: "rest.fragment"
+                notfound: "rest.notfound"
+                default: "rest.default"
+                min: "rest.min"
+                max: "rest.max"
+                callback: "rest.callback"
+                write: "rest.write"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: "/v1/numbers/random/math"
+          name: "random-math"
+          description: "REST surface for random math facts."
+          operations:
+            - method: GET
+              name: "getRandomMathFact"
+              description: "Return a random mathematical fact."
+              call: "numbers-math.getRandomMathFact"
+              with:
+                json: "rest.json"
+                fragment: "rest.fragment"
+                notfound: "rest.notfound"
+                default: "rest.default"
+                min: "rest.min"
+                max: "rest.max"
+                callback: "rest.callback"
+                write: "rest.write"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      namespace: "numbers-math-mcp"
+      port: 9090
+      transport: http
+      description: "MCP adapter for Numbers API — Math. One tool per consumed operation, routed inline through this capability's consumes block."
+      tools:
+        - name: "get-math-fact"
+          description: "Return a mathematical fact about a supplied integer."
+          hints:
+            readOnly: true
+            destructive: false
+            idempotent: true
+          call: "numbers-math.getMathFact"
+          with:
+            number: "tools.number"
+            json: "tools.json"
+            fragment: "tools.fragment"
+            notfound: "tools.notfound"
+            default: "tools.default"
+            min: "tools.min"
+            max: "tools.max"
+            callback: "tools.callback"
+            write: "tools.write"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: "get-random-math-fact"
+          description: "Return a random mathematical fact."
+          hints:
+            readOnly: true
+            destructive: false
+            idempotent: true
+          call: "numbers-math.getRandomMathFact"
+          with:
+            json: "tools.json"
+            fragment: "tools.fragment"
+            notfound: "tools.notfound"
+            default: "tools.default"
+            min: "tools.min"
+            max: "tools.max"
+            callback: "tools.callback"
+            write: "tools.write"
+          outputParameters:
+            - type: object
+              mapping: "$."

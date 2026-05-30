@@ -1,0 +1,37 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "numbers": "http://numbersapi.com/schema/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Fact": "numbers:Fact",
+    "BatchFacts": "numbers:BatchFacts",
+
+    "text": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "number": {
+      "@id": "numbers:number",
+      "@type": "xsd:double"
+    },
+    "found": {
+      "@id": "numbers:found",
+      "@type": "xsd:boolean"
+    },
+    "type": {
+      "@id": "dcterms:type",
+      "@type": "xsd:string"
+    },
+    "date": {
+      "@id": "numbers:date",
+      "@type": "xsd:string"
+    },
+    "year": {
+      "@id": "numbers:year",
+      "@type": "xsd:string"
+    }
+  }
+}

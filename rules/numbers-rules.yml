@@ -1,0 +1,383 @@
+extends: []
+
+# Spectral ruleset for the Numbers API (numbersapi.com).
+# Patterns enforced reflect the spec's dominant conventions:
+#  - Title prefix "Numbers API"
+#  - lowercase path segments, integer/keyword path params, no version prefix
+#  - camelCase operationIds with verb prefixes (get)
+#  - snake_case-friendly query parameters (matches `notfound`, `min`, `max`,
+#    `callback`, `write`, `fragment`, `json`, `default`)
+#  - Title Case tags grouped by fact type
+#  - Plain-text responses with optional `application/json` alternative
+#  - No authentication (public, free API)
+
+rules:
+
+  # ── INFO / METADATA ─────────────────────────────────────────────────────
+  info-title-prefix:
+    description: Info title must start with "Numbers API".
+    message: 'info.title should begin with "Numbers API".'
+    severity: warn
+    given: $.info.title
+    then:
+      function: pattern
+      functionOptions:
+        match: '^Numbers API'
+
+  info-description-required:
+    description: A non-empty info.description is required.
+    message: 'info.description is required and must be at least 40 characters.'
+    severity: error
+    given: $.info
+    then:
+      field: description
+      function: length
+      functionOptions:
+        min: 40
+
+  info-contact-email:
+    description: Info contact must include an email.
+    message: 'info.contact.email is recommended (numbersapi@gmail.com for this provider).'
+    severity: info
+    given: $.info.contact
+    then:
+      field: email
+      function: truthy
+
+  info-license-required:
+    description: Info license block must be present.
+    message: 'info.license is required.'
+    severity: warn
+    given: $.info
+    then:
+      field: license
+      function: truthy
+
+  # ── OPENAPI VERSION ─────────────────────────────────────────────────────
+  openapi-version-3:
+    description: Spec must be OpenAPI 3.0.x.
+    message: 'Spec must declare openapi version 3.0.x.'
+    severity: error
+    given: $.openapi
+    then:
+      function: pattern
+      functionOptions:
+        match: '^3\.0\.\d+$'
+
+  # ── SERVERS ─────────────────────────────────────────────────────────────
+  servers-defined:
+    description: At least one server must be defined.
+    message: 'A servers entry is required (e.g. http://numbersapi.com).'
+    severity: error
+    given: $
+    then:
+      field: servers
+      function: truthy
+
+  servers-url-required:
+    description: Each server entry must define a url.
+    message: 'servers[].url is required.'
+    severity: error
+    given: $.servers[*]
+    then:
+      field: url
+      function: truthy
+
+  servers-description-required:
+    description: Each server entry should include a description.
+    message: 'servers[].description is recommended.'
+    severity: warn
+    given: $.servers[*]
+    then:
+      field: description
+      function: truthy
+
+  # ── PATHS — NAMING CONVENTIONS ──────────────────────────────────────────
+  paths-lowercase:
+    description: Path segments must be lowercase.
+    message: 'Path "{{property}}" must use lowercase segments (e.g. /{number}/trivia).'
+    severity: error
+    given: $.paths.*~
+    then:
+      function: pattern
+      functionOptions:
+        match: '^/[a-z0-9{}/_.-]*$'
+
+  paths-no-trailing-slash:
+    description: Paths must not end with a trailing slash.
+    message: 'Path "{{property}}" must not end with a trailing slash.'
+    severity: error
+    given: $.paths.*~
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '/$'
+
+  paths-no-query-string:
+    description: Paths must not embed query strings.
+    message: 'Path "{{property}}" must not include a query string.'
+    severity: error
+    given: $.paths.*~
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '\?'
+
+  paths-no-version-prefix:
+    description: Numbers API paths are unversioned; do not introduce /v1, /v2 prefixes.
+    message: 'Path "{{property}}" should not include a version prefix; Numbers API is unversioned.'
+    severity: warn
+    given: $.paths.*~
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '^/v\d+/'
+
+  # ── OPERATIONS ──────────────────────────────────────────────────────────
+  operation-summary-required:
+    description: Every operation must have a summary.
+    message: '{{path}} is missing a summary.'
+    severity: error
+    given: $.paths.*[get,post,put,patch,delete,options,head]
+    then:
+      field: summary
+      function: truthy
+
+  operation-summary-prefix:
+    description: Operation summaries should start with "Numbers API".
+    message: 'Operation summary should begin with "Numbers API".'
+    severity: warn
+    given: $.paths.*[get,post,put,patch,delete,options,head].summary
+    then:
+      function: pattern
+      functionOptions:
+        match: '^Numbers API '
+
+  operation-description-required:
+    description: Every operation must have a description.
+    message: '{{path}} is missing a description.'
+    severity: warn
+    given: $.paths.*[get,post,put,patch,delete,options,head]
+    then:
+      field: description
+      function: truthy
+
+  operation-operationid-required:
+    description: Every operation must have an operationId.
+    message: '{{path}} is missing an operationId.'
+    severity: error
+    given: $.paths.*[get,post,put,patch,delete,options,head]
+    then:
+      field: operationId
+      function: truthy
+
+  operation-operationid-camelcase:
+    description: operationIds must be camelCase.
+    message: 'operationId "{{value}}" must be camelCase (e.g. getTriviaFact).'
+    severity: error
+    given: $.paths.*[get,post,put,patch,delete,options,head].operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]*$'
+
+  operation-operationid-verb-prefix:
+    description: operationIds should start with a recognized verb.
+    message: 'operationId "{{value}}" should start with get/list/create/update/delete/search.'
+    severity: warn
+    given: $.paths.*[get,post,put,patch,delete,options,head].operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: '^(get|list|create|update|delete|search|add|remove)[A-Z]'
+
+  operation-tags-required:
+    description: Every operation must declare at least one tag.
+    message: '{{path}} must declare a tag.'
+    severity: error
+    given: $.paths.*[get,post,put,patch,delete,options,head]
+    then:
+      field: tags
+      function: truthy
+
+  # ── TAGS ────────────────────────────────────────────────────────────────
+  global-tags-defined:
+    description: A global tags array must be defined.
+    message: 'A top-level tags array is required.'
+    severity: warn
+    given: $
+    then:
+      field: tags
+      function: truthy
+
+  tag-description-required:
+    description: Each global tag must include a description.
+    message: 'Tag "{{value}}" is missing a description.'
+    severity: warn
+    given: $.tags[*]
+    then:
+      field: description
+      function: truthy
+
+  tag-title-case:
+    description: Tag names must be Title Case (single word per tag).
+    message: 'Tag "{{value}}" must be Title Case (e.g. Trivia, Math, Date, Year, Batch).'
+    severity: warn
+    given: $.tags[*].name
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[A-Z][a-zA-Z]*( [A-Z][a-zA-Z]*)*$'
+
+  # ── PARAMETERS ──────────────────────────────────────────────────────────
+  parameter-description-required:
+    description: Every parameter must include a description.
+    message: 'Parameter "{{value}}" is missing a description.'
+    severity: warn
+    given: $..parameters[*]
+    then:
+      field: description
+      function: truthy
+
+  parameter-name-lowercase:
+    description: >-
+      Query and path parameter names must be lowercase (matches the API's
+      style: `json`, `fragment`, `notfound`, `min`, `max`, `callback`,
+      `write`, `default`).
+    message: 'Parameter "{{value}}" must be lowercase.'
+    severity: warn
+    given: $..parameters[?(@.in == 'query' || @.in == 'path')].name
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]*$'
+
+  parameter-required-flag-on-path:
+    description: Path parameters must declare required:true.
+    message: 'Path parameter "{{value}}" must have required:true.'
+    severity: error
+    given: $..parameters[?(@.in == 'path')]
+    then:
+      field: required
+      function: truthy
+
+  parameter-example-recommended:
+    description: Query parameters should include an example.
+    message: 'Parameter "{{value}}" should include an example.'
+    severity: info
+    given: $..parameters[?(@.in == 'query')]
+    then:
+      field: example
+      function: truthy
+
+  # ── RESPONSES ───────────────────────────────────────────────────────────
+  response-success-required:
+    description: Every operation must declare a 2xx response.
+    message: '{{path}} must declare a 200 response.'
+    severity: error
+    given: $.paths.*[get,post,put,patch,delete,options,head].responses
+    then:
+      field: '200'
+      function: truthy
+
+  response-description-required:
+    description: Every response must include a description.
+    message: 'Response "{{property}}" is missing a description.'
+    severity: error
+    given: $..responses[*]
+    then:
+      field: description
+      function: truthy
+
+  response-plaintext-content:
+    description: 200 responses should include a text/plain representation (Numbers API default).
+    message: '200 response should include a text/plain content type.'
+    severity: warn
+    given: $.paths.*[get].responses[200].content
+    then:
+      field: 'text/plain'
+      function: truthy
+
+  response-json-content:
+    description: 200 responses should also include an application/json representation.
+    message: '200 response should also include an application/json content type.'
+    severity: info
+    given: $.paths.*[get].responses[200].content
+    then:
+      field: 'application/json'
+      function: truthy
+
+  # ── REQUEST BODIES ──────────────────────────────────────────────────────
+  no-request-body-on-get:
+    description: GET operations must not declare a request body.
+    message: '{{path}} GET must not declare a requestBody.'
+    severity: error
+    given: $.paths.*.get
+    then:
+      field: requestBody
+      function: falsy
+
+  # ── SCHEMAS — PROPERTY NAMING ───────────────────────────────────────────
+  schema-property-snake-or-camel:
+    description: >-
+      Schema property names should be lowercase camelCase or snake_case;
+      Numbers API's `Fact` object uses lowercase single-word fields
+      (`text`, `number`, `found`, `type`, `date`, `year`).
+    message: 'Schema property "{{property}}" must be camelCase or snake_case.'
+    severity: warn
+    given: $.components.schemas.*.properties.*~
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9_]*$'
+
+  schema-types-defined:
+    description: Every schema must declare a type.
+    message: 'Schema "{{property}}" must declare a type.'
+    severity: warn
+    given: $.components.schemas.*
+    then:
+      field: type
+      function: truthy
+
+  schema-description-required:
+    description: Top-level schemas must include a description.
+    message: 'Schema "{{property}}" must include a description.'
+    severity: warn
+    given: $.components.schemas.*
+    then:
+      field: description
+      function: truthy
+
+  # ── SECURITY ────────────────────────────────────────────────────────────
+  security-not-required:
+    description: >-
+      Numbers API is a free public API; do not declare global security
+      requirements that would imply authentication.
+    message: 'Numbers API does not require authentication; security should be absent.'
+    severity: info
+    given: $
+    then:
+      field: security
+      function: falsy
+
+  # ── HTTP METHOD CONVENTIONS ─────────────────────────────────────────────
+  only-get-methods:
+    description: >-
+      Numbers API exposes only GET endpoints. Do not introduce POST/PUT/PATCH/
+      DELETE operations.
+    message: '{{path}} introduces a non-GET method; Numbers API only exposes GETs.'
+    severity: error
+    given: $.paths.*[post,put,patch,delete]
+    then:
+      function: undefined
+
+  # ── GENERAL QUALITY ─────────────────────────────────────────────────────
+  examples-encouraged:
+    description: 200 responses should include named examples.
+    message: '200 response should include an `examples:` block.'
+    severity: info
+    given: $.paths.*[get].responses[200].content.application/json
+    then:
+      field: examples
+      function: truthy

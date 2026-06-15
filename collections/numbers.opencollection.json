@@ -1,0 +1,636 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Numbers API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Trivia",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Numbers API Get Trivia Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:number",
+            "params": [
+              {
+                "name": "number",
+                "value": "42",
+                "type": "path",
+                "description": "Integer to look up, or the keyword `random` to receive a random available fact."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "min",
+                "value": "10",
+                "type": "query",
+                "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "max",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a trivia fact about the supplied integer. This is the default endpoint when no `type` segment is given. Use the keyword `random` to receive a random trivia fact."
+        },
+        {
+          "info": {
+            "name": "Numbers API Get Trivia Fact Explicit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:number/trivia",
+            "params": [
+              {
+                "name": "number",
+                "value": "42",
+                "type": "path",
+                "description": "Integer to look up, or the keyword `random` to receive a random available fact."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "min",
+                "value": "10",
+                "type": "query",
+                "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "max",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a trivia fact about the supplied integer. Equivalent to `/{number}` but with an explicit `trivia` type segment."
+        },
+        {
+          "info": {
+            "name": "Numbers API Get Random Trivia Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/random/trivia",
+            "params": [
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "min",
+                "value": "10",
+                "type": "query",
+                "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "max",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a random trivia fact. Supports `min` and `max` to bound the random integer."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Math",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Numbers API Get Math Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:number/math",
+            "params": [
+              {
+                "name": "number",
+                "value": "42",
+                "type": "path",
+                "description": "Integer to look up, or the keyword `random` to receive a random available fact."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "min",
+                "value": "10",
+                "type": "query",
+                "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "max",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a mathematical fact about the supplied integer. Use the keyword `random` to receive a random math fact."
+        },
+        {
+          "info": {
+            "name": "Numbers API Get Random Math Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/random/math",
+            "params": [
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "min",
+                "value": "10",
+                "type": "query",
+                "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "max",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a random mathematical fact. Equivalent to `/random/math`; an alias for `getMathFact` with `number=random`. Supports `min` and `max` to bound the random integer."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Date",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Numbers API Get Random Date Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/random/date",
+            "params": [
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a random date fact (a fact tied to a day of year, returned with the corresponding `month/day`)."
+        },
+        {
+          "info": {
+            "name": "Numbers API Get Date Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:month/:day/date",
+            "params": [
+              {
+                "name": "month",
+                "value": "2",
+                "type": "path",
+                "description": "Month number, 1-12 (zero padding is accepted, e.g. `04`)."
+              },
+              {
+                "name": "day",
+                "value": "29",
+                "type": "path",
+                "description": "Day-of-month number, 1-31 (zero padding is accepted, e.g. `09`)."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a historical fact about a specific day of the year, supplied as a `month/day` path (e.g. `2/29`, `04/1`). The keyword `random` may be used in place of `month/day` to get a random date fact, in which case the URL is `/random/date`."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Year",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Numbers API Get Random Year Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/random/year",
+            "params": [
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a random year fact (a fact tied to a calendar year). The response includes the year as `number` and, when applicable, an associated `date` string."
+        },
+        {
+          "info": {
+            "name": "Numbers API Get Year Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:year/year",
+            "params": [
+              {
+                "name": "year",
+                "value": "1969",
+                "type": "path",
+                "description": "Year number; negative integers represent BC."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a historical fact about a specific calendar year. Negative integers represent BC years. The keyword `random` may be used in place of `year` to get a random year fact, in which case the URL is `/random/year`."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Numbers API Get Batch Facts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:numberRange/batch",
+            "params": [
+              {
+                "name": "numberRange",
+                "value": "1..3,10",
+                "type": "path",
+                "description": "Comma-separated list of integers and inclusive `min..max` ranges."
+              },
+              {
+                "name": "type",
+                "value": "trivia",
+                "type": "query",
+                "description": "Fact type to apply to all numbers in the batch."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              }
+            ]
+          },
+          "docs": "Return facts for multiple numbers in a single response. The `numberRange` path segment is a comma-separated list of integers and `min..max` ranges (e.g. `1..3,10`). Responses are always a JSON map from number to fact, of at most 100 numbers. Although the underlying URL pattern is `/{numberRange}` (or `/{numberRange}/{type}`), this operation models the batch case explicitly for tooling clarity."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

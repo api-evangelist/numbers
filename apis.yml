@@ -48,17 +48,17 @@ apis:
         url: json-structure/numbers-fact-structure.json
       - type: JSONStructure
         url: json-structure/numbers-batch-facts-structure.json
-      - type: Example
+      - type: Examples
         url: examples/numbers-fact-example.json
-      - type: Example
+      - type: Examples
         url: examples/numbers-trivia-fact-example.json
-      - type: Example
+      - type: Examples
         url: examples/numbers-math-fact-example.json
-      - type: Example
+      - type: Examples
         url: examples/numbers-date-fact-example.json
-      - type: Example
+      - type: Examples
         url: examples/numbers-year-fact-example.json
-      - type: Example
+      - type: Examples
         url: examples/numbers-batch-facts-example.json
 common:
   - type: Website

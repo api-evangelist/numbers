@@ -2,11 +2,13 @@
   "repo": "numbers",
   "feeds": [
     {
-      "source": "http://david-hu.com/2012/03/05/announcing-numbers-api.html",
+      "source": "http://numbersapi.com/#api",
+      "feed_url": "http://numbersapi.com/#api",
+      "title": "",
       "saved": 0,
-      "error": "HTTP 403 Forbidden"
+      "method": "none"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-06-27T12:57:33Z"
+  "fetched": "2026-07-11T11:50:51Z"
 }

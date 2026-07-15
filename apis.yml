@@ -61,6 +61,8 @@ apis:
       - type: Examples
         url: examples/numbers-batch-facts-example.json
 common:
+  - type: AgenticAccess
+    url: agentic-access/numbers-agentic-access.yml
   - type: DomainSecurity
     url: security/numbers-domain-security.yml
   - type: Website

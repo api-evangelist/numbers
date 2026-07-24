@@ -1,0 +1,281 @@
+openapi: 3.0.3
+info:
+  title: Numbers Batch Trivia API
+  version: 1.0.0
+  description: Numbers API by David Hu and Mack Duan — a free, community-contributed HTTP API for interesting facts about numbers. Returns trivia, math, date, and year facts as plain text or JSON. Supports random numbers, batches/ranges, JSONP callbacks, document.write embedding, sentence-fragment responses, and configurable not-found behavior.
+  contact:
+    name: Numbers API
+    email: numbersapi@gmail.com
+    url: http://numbersapi.com/
+  license:
+    name: Free for any use (community API)
+    url: http://numbersapi.com/
+servers:
+- url: http://numbersapi.com
+  description: Numbers API production endpoint.
+tags:
+- name: Trivia
+  description: Trivia facts about integers.
+paths:
+  /{number}:
+    get:
+      operationId: getTrivia
+      summary: Numbers API Get Trivia Fact
+      description: Return a trivia fact about the supplied integer. This is the default endpoint when no `type` segment is given. Use the keyword `random` to receive a random trivia fact.
+      tags:
+      - Trivia
+      parameters:
+      - $ref: '#/components/parameters/NumberPath'
+      - $ref: '#/components/parameters/Json'
+      - $ref: '#/components/parameters/Fragment'
+      - $ref: '#/components/parameters/Notfound'
+      - $ref: '#/components/parameters/Default'
+      - $ref: '#/components/parameters/Min'
+      - $ref: '#/components/parameters/Max'
+      - $ref: '#/components/parameters/Callback'
+      - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Trivia fact, returned as plain text by default or JSON when `json` is set.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 42 is the number of laws of cricket.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetTrivia200Example:
+                  summary: Default getTrivia 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 42 is the number of laws of cricket.
+                    found: true
+                    number: 42
+                    type: trivia
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /{number}/trivia:
+    get:
+      operationId: getTriviaFact
+      summary: Numbers API Get Trivia Fact Explicit
+      description: Return a trivia fact about the supplied integer. Equivalent to `/{number}` but with an explicit `trivia` type segment.
+      tags:
+      - Trivia
+      parameters:
+      - $ref: '#/components/parameters/NumberPath'
+      - $ref: '#/components/parameters/Json'
+      - $ref: '#/components/parameters/Fragment'
+      - $ref: '#/components/parameters/Notfound'
+      - $ref: '#/components/parameters/Default'
+      - $ref: '#/components/parameters/Min'
+      - $ref: '#/components/parameters/Max'
+      - $ref: '#/components/parameters/Callback'
+      - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Trivia fact, returned as plain text by default or JSON when `json` is set.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 23 is the number of times Julius Caesar was stabbed.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetTriviaFact200Example:
+                  summary: Default getTriviaFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 23 is the number of times Julius Caesar was stabbed.
+                    found: true
+                    number: 23
+                    type: trivia
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /random/trivia:
+    get:
+      operationId: getRandomTriviaFact
+      summary: Numbers API Get Random Trivia Fact
+      description: Return a random trivia fact. Supports `min` and `max` to bound the random integer.
+      tags:
+      - Trivia
+      parameters:
+      - $ref: '#/components/parameters/Json'
+      - $ref: '#/components/parameters/Fragment'
+      - $ref: '#/components/parameters/Notfound'
+      - $ref: '#/components/parameters/Default'
+      - $ref: '#/components/parameters/Min'
+      - $ref: '#/components/parameters/Max'
+      - $ref: '#/components/parameters/Callback'
+      - $ref: '#/components/parameters/Write'
+      responses:
+        '200':
+          description: Random trivia fact.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 13 is the number of provinces and territories in Canada.
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fact'
+              examples:
+                GetRandomTriviaFact200Example:
+                  summary: Default getRandomTriviaFact 200 response
+                  x-microcks-default: true
+                  value:
+                    text: 13 is the number of provinces and territories in Canada.
+                    found: true
+                    number: 13
+                    type: trivia
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Fact:
+      type: object
+      description: A single Numbers API fact returned in JSON form.
+      required:
+      - text
+      - number
+      - found
+      - type
+      properties:
+        text:
+          type: string
+          description: Plain-text fact about the number.
+          example: 42 is the result given by Google and Bing for the query "the answer to life the universe and everything".
+        number:
+          type: number
+          description: Floating-point number the fact pertains to. For date facts, this is the 1-indexed day of a leap year (e.g. 61 is March 1).
+          example: 42
+        found:
+          type: boolean
+          description: Whether a real fact was found for the requested number.
+          example: true
+        type:
+          type: string
+          description: Category of the returned fact.
+          enum:
+          - trivia
+          - math
+          - date
+          - year
+          example: trivia
+        date:
+          type: string
+          description: Day of year associated with year facts, as a string (e.g. `June 6`).
+          example: June 6
+        year:
+          type: string
+          description: Year associated with date facts, as a string (e.g. `1969`).
+          example: '1969'
+  parameters:
+    Default:
+      name: default
+      in: query
+      required: false
+      description: Custom message to return when no fact exists for the requested number.
+      schema:
+        type: string
+      example: Boring number is boring.
+    Min:
+      name: min
+      in: query
+      required: false
+      description: Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`.
+      schema:
+        type: integer
+      example: 10
+    Write:
+      name: write
+      in: query
+      required: false
+      description: Wrap the response in `document.write("<fact>")` so a single `<script src="...">` tag can render the fact inline. Equivalent to `callback=document.write`.
+      schema:
+        type: boolean
+      example: true
+    Notfound:
+      name: notfound
+      in: query
+      required: false
+      description: Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up.
+      schema:
+        type: string
+        enum:
+        - default
+        - floor
+        - ceil
+        default: default
+      example: floor
+    Callback:
+      name: callback
+      in: query
+      required: false
+      description: JSONP callback function name. The response is wrapped as `<callback>("<fact>")`.
+      schema:
+        type: string
+      example: showNumber
+    Fragment:
+      name: fragment
+      in: query
+      required: false
+      description: Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence.
+      schema:
+        type: boolean
+      example: true
+    Json:
+      name: json
+      in: query
+      required: false
+      description: 'Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header.'
+      schema:
+        type: boolean
+      example: true
+    NumberPath:
+      name: number
+      in: path
+      required: true
+      description: Integer to look up, or the keyword `random` to receive a random available fact.
+      schema:
+        type: string
+        pattern: ^(random|-?\d+)$
+      example: '42'
+    Max:
+      name: max
+      in: query
+      required: false
+      description: Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`.
+      schema:
+        type: integer
+      example: 20
+  responses:
+    NotFound:
+      description: No fact was found for the requested number. The body still contains a plain-text or JSON message; the HTTP status reflects the lookup outcome only when `notfound` is left at its default.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: 314159265358979 is a boring number.
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Fact'
+          examples:
+            NotFoundExample:
+              summary: Default 404 response
+              x-microcks-default: true
+              value:
+                text: 314159265358979 is a boring number.
+                found: false
+                number: 314159265358979
+                type: trivia

@@ -1,4 +1,16 @@
 aid: numbers
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/numbers.png
 name: Numbers API
 description: >-
   Numbers API by David Hu and Mack Duan — a free, community-contributed HTTP API for interesting facts about numbers.
@@ -20,46 +32,186 @@ tags:
   - Dates
   - Open Source
 apis:
-  - name: Numbers API
-    description: >-
-      HTTP API for trivia, math, date, and year facts about numbers. URL pattern is `/{number}/{type}` where type is one
-      of `trivia`, `math`, `date`, or `year`. Numbers may be integers, the keyword `random`, a `month/day` date, or
-      batch ranges. Responses default to plain text and can be returned as JSON via the `json` query parameter.
-    humanURL: http://numbersapi.com/
-    baseURL: http://numbersapi.com/
-    tags:
-      - Science And Math
-      - Trivia
-      - Numbers
-    properties:
-      - type: Documentation
-        url: http://numbersapi.com/#api
-      - type: APIReference
-        url: http://numbersapi.com/#api
-      - type: GettingStarted
-        url: http://numbersapi.com/#api
-      - type: OpenAPI
-        url: openapi/numbers-openapi.yml
-      - type: JSONSchema
-        url: json-schema/numbers-fact-schema.json
-      - type: JSONSchema
-        url: json-schema/numbers-batch-facts-schema.json
-      - type: JSONStructure
-        url: json-structure/numbers-fact-structure.json
-      - type: JSONStructure
-        url: json-structure/numbers-batch-facts-structure.json
-      - type: Examples
-        url: examples/numbers-fact-example.json
-      - type: Examples
-        url: examples/numbers-trivia-fact-example.json
-      - type: Examples
-        url: examples/numbers-math-fact-example.json
-      - type: Examples
-        url: examples/numbers-date-fact-example.json
-      - type: Examples
-        url: examples/numbers-year-fact-example.json
-      - type: Examples
-        url: examples/numbers-batch-facts-example.json
+- aid: numbers:numbers-batch-api
+  name: Numbers API Batch API
+  description: Multiple facts returned in a single request as a JSON map.
+  humanURL: http://numbersapi.com/
+  baseURL: http://numbersapi.com/
+  tags:
+  - Batch
+  properties:
+  - type: OpenAPI
+    url: openapi/numbers-batch-api-openapi.yml
+  - type: Documentation
+    url: http://numbersapi.com/#api
+  - type: APIReference
+    url: http://numbersapi.com/#api
+  - type: GettingStarted
+    url: http://numbersapi.com/#api
+  - type: JSONSchema
+    url: json-schema/numbers-fact-schema.json
+  - type: JSONSchema
+    url: json-schema/numbers-batch-facts-schema.json
+  - type: JSONStructure
+    url: json-structure/numbers-fact-structure.json
+  - type: JSONStructure
+    url: json-structure/numbers-batch-facts-structure.json
+  - type: Examples
+    url: examples/numbers-fact-example.json
+  - type: Examples
+    url: examples/numbers-trivia-fact-example.json
+  - type: Examples
+    url: examples/numbers-math-fact-example.json
+  - type: Examples
+    url: examples/numbers-date-fact-example.json
+  - type: Examples
+    url: examples/numbers-year-fact-example.json
+  - type: Examples
+    url: examples/numbers-batch-facts-example.json
+- aid: numbers:numbers-date-api
+  name: Numbers API Date API
+  description: Historical facts associated with a day of the year.
+  humanURL: http://numbersapi.com/
+  baseURL: http://numbersapi.com/
+  tags:
+  - Date
+  properties:
+  - type: OpenAPI
+    url: openapi/numbers-date-api-openapi.yml
+  - type: Documentation
+    url: http://numbersapi.com/#api
+  - type: APIReference
+    url: http://numbersapi.com/#api
+  - type: GettingStarted
+    url: http://numbersapi.com/#api
+  - type: JSONSchema
+    url: json-schema/numbers-fact-schema.json
+  - type: JSONSchema
+    url: json-schema/numbers-batch-facts-schema.json
+  - type: JSONStructure
+    url: json-structure/numbers-fact-structure.json
+  - type: JSONStructure
+    url: json-structure/numbers-batch-facts-structure.json
+  - type: Examples
+    url: examples/numbers-fact-example.json
+  - type: Examples
+    url: examples/numbers-trivia-fact-example.json
+  - type: Examples
+    url: examples/numbers-math-fact-example.json
+  - type: Examples
+    url: examples/numbers-date-fact-example.json
+  - type: Examples
+    url: examples/numbers-year-fact-example.json
+  - type: Examples
+    url: examples/numbers-batch-facts-example.json
+- aid: numbers:numbers-math-api
+  name: Numbers API Math API
+  description: Mathematical properties of integers.
+  humanURL: http://numbersapi.com/
+  baseURL: http://numbersapi.com/
+  tags:
+  - Math
+  properties:
+  - type: OpenAPI
+    url: openapi/numbers-math-api-openapi.yml
+  - type: Documentation
+    url: http://numbersapi.com/#api
+  - type: APIReference
+    url: http://numbersapi.com/#api
+  - type: GettingStarted
+    url: http://numbersapi.com/#api
+  - type: JSONSchema
+    url: json-schema/numbers-fact-schema.json
+  - type: JSONSchema
+    url: json-schema/numbers-batch-facts-schema.json
+  - type: JSONStructure
+    url: json-structure/numbers-fact-structure.json
+  - type: JSONStructure
+    url: json-structure/numbers-batch-facts-structure.json
+  - type: Examples
+    url: examples/numbers-fact-example.json
+  - type: Examples
+    url: examples/numbers-trivia-fact-example.json
+  - type: Examples
+    url: examples/numbers-math-fact-example.json
+  - type: Examples
+    url: examples/numbers-date-fact-example.json
+  - type: Examples
+    url: examples/numbers-year-fact-example.json
+  - type: Examples
+    url: examples/numbers-batch-facts-example.json
+- aid: numbers:numbers-trivia-api
+  name: Numbers API Trivia API
+  description: Trivia facts about integers.
+  humanURL: http://numbersapi.com/
+  baseURL: http://numbersapi.com/
+  tags:
+  - Trivia
+  properties:
+  - type: OpenAPI
+    url: openapi/numbers-trivia-api-openapi.yml
+  - type: Documentation
+    url: http://numbersapi.com/#api
+  - type: APIReference
+    url: http://numbersapi.com/#api
+  - type: GettingStarted
+    url: http://numbersapi.com/#api
+  - type: JSONSchema
+    url: json-schema/numbers-fact-schema.json
+  - type: JSONSchema
+    url: json-schema/numbers-batch-facts-schema.json
+  - type: JSONStructure
+    url: json-structure/numbers-fact-structure.json
+  - type: JSONStructure
+    url: json-structure/numbers-batch-facts-structure.json
+  - type: Examples
+    url: examples/numbers-fact-example.json
+  - type: Examples
+    url: examples/numbers-trivia-fact-example.json
+  - type: Examples
+    url: examples/numbers-math-fact-example.json
+  - type: Examples
+    url: examples/numbers-date-fact-example.json
+  - type: Examples
+    url: examples/numbers-year-fact-example.json
+  - type: Examples
+    url: examples/numbers-batch-facts-example.json
+- aid: numbers:numbers-year-api
+  name: Numbers API Year API
+  description: Historical facts associated with a year.
+  humanURL: http://numbersapi.com/
+  baseURL: http://numbersapi.com/
+  tags:
+  - Year
+  properties:
+  - type: OpenAPI
+    url: openapi/numbers-year-api-openapi.yml
+  - type: Documentation
+    url: http://numbersapi.com/#api
+  - type: APIReference
+    url: http://numbersapi.com/#api
+  - type: GettingStarted
+    url: http://numbersapi.com/#api
+  - type: JSONSchema
+    url: json-schema/numbers-fact-schema.json
+  - type: JSONSchema
+    url: json-schema/numbers-batch-facts-schema.json
+  - type: JSONStructure
+    url: json-structure/numbers-fact-structure.json
+  - type: JSONStructure
+    url: json-structure/numbers-batch-facts-structure.json
+  - type: Examples
+    url: examples/numbers-fact-example.json
+  - type: Examples
+    url: examples/numbers-trivia-fact-example.json
+  - type: Examples
+    url: examples/numbers-math-fact-example.json
+  - type: Examples
+    url: examples/numbers-date-fact-example.json
+  - type: Examples
+    url: examples/numbers-year-fact-example.json
+  - type: Examples
+    url: examples/numbers-batch-facts-example.json
 common:
   - type: AgenticAccess
     url: agentic-access/numbers-agentic-access.yml

@@ -1,0 +1,22 @@
+{
+  "provider": "numbers",
+  "sources": [
+    "numbers-batch-api-openapi.yml",
+    "numbers-date-api-openapi.yml",
+    "numbers-math-api-openapi.yml",
+    "numbers-trivia-api-openapi.yml",
+    "numbers-year-api-openapi.yml"
+  ],
+  "outputs": [
+    "numbers-batch-api-openapi.yml",
+    "numbers-date-api-openapi.yml",
+    "numbers-math-api-openapi.yml",
+    "numbers-trivia-api-openapi.yml",
+    "numbers-year-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

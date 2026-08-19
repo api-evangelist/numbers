@@ -17,7 +17,7 @@ description: >-
   Returns trivia, math, date, and year facts as plain text or JSON. Supports random numbers, ranges/batches, JSONP
   callbacks, document.write embedding, sentence-fragment responses, and configurable not-found behavior.
 url: http://numbersapi.com/
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-05-28'
 modified: '2026-05-30'
 x-source: public-apis/public-apis

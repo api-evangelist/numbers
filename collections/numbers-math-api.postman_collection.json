@@ -1,0 +1,433 @@
+{
+  "item": [
+    {
+      "id": "5d11082c-5433-4ced-9afa-731a0a9da8aa",
+      "name": "Math",
+      "description": {
+        "content": "Mathematical properties of integers.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "87713879-f096-41de-a10b-b2e8d3aeaedd",
+          "name": "Numbers API Get Math Fact",
+          "request": {
+            "name": "Numbers API Get Math Fact",
+            "description": {
+              "content": "Return a mathematical fact about the supplied integer. Use the keyword `random` to receive a random math fact.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":number",
+                "math"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "json",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+                },
+                {
+                  "disabled": false,
+                  "key": "fragment",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+                },
+                {
+                  "disabled": false,
+                  "key": "notfound",
+                  "value": "default",
+                  "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+                },
+                {
+                  "disabled": false,
+                  "key": "default",
+                  "value": "<string>",
+                  "description": "Custom message to return when no fact exists for the requested number."
+                },
+                {
+                  "disabled": false,
+                  "key": "min",
+                  "value": "<integer>",
+                  "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+                },
+                {
+                  "disabled": false,
+                  "key": "max",
+                  "value": "<integer>",
+                  "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+                },
+                {
+                  "disabled": false,
+                  "key": "callback",
+                  "value": "<string>",
+                  "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+                },
+                {
+                  "disabled": false,
+                  "key": "write",
+                  "value": "<boolean>",
+                  "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "number",
+                  "description": "(Required) Integer to look up, or the keyword `random` to receive a random available fact."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "465aa637-3540-4dac-9f98-c60bad8bb2e5",
+              "name": "Math fact, returned as plain text by default or JSON when `json` is set.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":number",
+                    "math"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "json",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fragment",
+                      "value": "true"
+                    },
+                    {
+                      "key": "notfound",
+                      "value": "floor"
+                    },
+                    {
+                      "key": "default",
+                      "value": "Boring number is boring."
+                    },
+                    {
+                      "key": "min",
+                      "value": "10"
+                    },
+                    {
+                      "key": "max",
+                      "value": "20"
+                    },
+                    {
+                      "key": "callback",
+                      "value": "showNumber"
+                    },
+                    {
+                      "key": "write",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "number",
+                      "description": "(Required) Integer to look up, or the keyword `random` to receive a random available fact."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"42 is the 5th Catalan number.\",\n  \"found\": true,\n  \"number\": 42,\n  \"type\": \"math\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f34c16d-f690-491e-b2b8-3b2733518fa2",
+              "name": "No fact was found for the requested number. The body still contains a plain-text or JSON message; the HTTP status reflects the lookup outcome only when `notfound` is left at its default.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":number",
+                    "math"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "json",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fragment",
+                      "value": "true"
+                    },
+                    {
+                      "key": "notfound",
+                      "value": "floor"
+                    },
+                    {
+                      "key": "default",
+                      "value": "Boring number is boring."
+                    },
+                    {
+                      "key": "min",
+                      "value": "10"
+                    },
+                    {
+                      "key": "max",
+                      "value": "20"
+                    },
+                    {
+                      "key": "callback",
+                      "value": "showNumber"
+                    },
+                    {
+                      "key": "write",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "number",
+                      "description": "(Required) Integer to look up, or the keyword `random` to receive a random available fact."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"314159265358979 is a boring number.\",\n  \"found\": false,\n  \"number\": 314159265358979,\n  \"type\": \"trivia\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b546fab-4e34-4fa2-82ff-7caf6154820a",
+          "name": "Numbers API Get Random Math Fact",
+          "request": {
+            "name": "Numbers API Get Random Math Fact",
+            "description": {
+              "content": "Return a random mathematical fact. Equivalent to `/random/math`; an alias for `getMathFact` with `number=random`. Supports `min` and `max` to bound the random integer.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "random",
+                "math"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "json",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+                },
+                {
+                  "disabled": false,
+                  "key": "fragment",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+                },
+                {
+                  "disabled": false,
+                  "key": "notfound",
+                  "value": "default",
+                  "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+                },
+                {
+                  "disabled": false,
+                  "key": "default",
+                  "value": "<string>",
+                  "description": "Custom message to return when no fact exists for the requested number."
+                },
+                {
+                  "disabled": false,
+                  "key": "min",
+                  "value": "<integer>",
+                  "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+                },
+                {
+                  "disabled": false,
+                  "key": "max",
+                  "value": "<integer>",
+                  "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+                },
+                {
+                  "disabled": false,
+                  "key": "callback",
+                  "value": "<string>",
+                  "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+                },
+                {
+                  "disabled": false,
+                  "key": "write",
+                  "value": "<boolean>",
+                  "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dfd35dce-58b3-408b-9c1b-c35f1c022212",
+              "name": "Random math fact.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "random",
+                    "math"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "json",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fragment",
+                      "value": "true"
+                    },
+                    {
+                      "key": "notfound",
+                      "value": "floor"
+                    },
+                    {
+                      "key": "default",
+                      "value": "Boring number is boring."
+                    },
+                    {
+                      "key": "min",
+                      "value": "10"
+                    },
+                    {
+                      "key": "max",
+                      "value": "20"
+                    },
+                    {
+                      "key": "callback",
+                      "value": "showNumber"
+                    },
+                    {
+                      "key": "write",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"7 is the lowest dimension of a known exotic sphere.\",\n  \"found\": true,\n  \"number\": 7,\n  \"type\": \"math\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://numbersapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4070221a-ff01-4146-9ac0-64534cbb0108",
+    "name": "Numbers Batch Math API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Numbers API by David Hu and Mack Duan — a free, community-contributed HTTP API for interesting facts about numbers. Returns trivia, math, date, and year facts as plain text or JSON. Supports random numbers, batches/ranges, JSONP callbacks, document.write embedding, sentence-fragment responses, and configurable not-found behavior.\n\nContact Support:\n Name: Numbers API\n Email: numbersapi@gmail.com",
+      "type": "text/plain"
+    }
+  }
+}

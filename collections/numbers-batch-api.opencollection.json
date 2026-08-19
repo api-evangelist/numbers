@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Numbers Batch API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Numbers API Get Batch Facts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:numberRange/batch",
+            "params": [
+              {
+                "name": "numberRange",
+                "value": "1..3,10",
+                "type": "path",
+                "description": "Comma-separated list of integers and inclusive `min..max` ranges."
+              },
+              {
+                "name": "type",
+                "value": "trivia",
+                "type": "query",
+                "description": "Fact type to apply to all numbers in the batch."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              }
+            ]
+          },
+          "docs": "Return facts for multiple numbers in a single response. The `numberRange` path segment is a comma-separated list of integers and `min..max` ranges (e.g. `1..3,10`). Responses are always a JSON map from number to fact, of at most 100 numbers. Although the underlying URL pattern is `/{numberRange}` (or `/{numberRange}/{type}`), this operation models the batch case explicitly for tooling clarity."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

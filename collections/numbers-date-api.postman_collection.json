@@ -1,0 +1,409 @@
+{
+  "item": [
+    {
+      "id": "709a4fc9-2cfa-4063-9cd8-7ff2156878fc",
+      "name": "Date",
+      "description": {
+        "content": "Historical facts associated with a day of the year.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fa4a1428-2c5f-4537-b3fd-91e2c025fda6",
+          "name": "Numbers API Get Random Date Fact",
+          "request": {
+            "name": "Numbers API Get Random Date Fact",
+            "description": {
+              "content": "Return a random date fact (a fact tied to a day of year, returned with the corresponding `month/day`).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "random",
+                "date"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "json",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+                },
+                {
+                  "disabled": false,
+                  "key": "fragment",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+                },
+                {
+                  "disabled": false,
+                  "key": "notfound",
+                  "value": "default",
+                  "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+                },
+                {
+                  "disabled": false,
+                  "key": "default",
+                  "value": "<string>",
+                  "description": "Custom message to return when no fact exists for the requested number."
+                },
+                {
+                  "disabled": false,
+                  "key": "callback",
+                  "value": "<string>",
+                  "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+                },
+                {
+                  "disabled": false,
+                  "key": "write",
+                  "value": "<boolean>",
+                  "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cef3d7ad-11b0-4be5-80f6-3d38811418bb",
+              "name": "Random date fact.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "random",
+                    "date"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "json",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fragment",
+                      "value": "true"
+                    },
+                    {
+                      "key": "notfound",
+                      "value": "floor"
+                    },
+                    {
+                      "key": "default",
+                      "value": "Boring number is boring."
+                    },
+                    {
+                      "key": "callback",
+                      "value": "showNumber"
+                    },
+                    {
+                      "key": "write",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"April 1 is the day in 1976 that Apple Computer Company is founded by Steve Jobs, Steve Wozniak, and Ronald Wayne.\",\n  \"found\": true,\n  \"number\": 92,\n  \"type\": \"date\",\n  \"year\": \"1976\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0f2c5f70-f314-4cf3-b667-75e8435de134",
+          "name": "Numbers API Get Date Fact",
+          "request": {
+            "name": "Numbers API Get Date Fact",
+            "description": {
+              "content": "Return a historical fact about a specific day of the year, supplied as a `month/day` path (e.g. `2/29`, `04/1`). The keyword `random` may be used in place of `month/day` to get a random date fact, in which case the URL is `/random/date`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":month",
+                ":day",
+                "date"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "json",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+                },
+                {
+                  "disabled": false,
+                  "key": "fragment",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+                },
+                {
+                  "disabled": false,
+                  "key": "notfound",
+                  "value": "default",
+                  "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+                },
+                {
+                  "disabled": false,
+                  "key": "default",
+                  "value": "<string>",
+                  "description": "Custom message to return when no fact exists for the requested number."
+                },
+                {
+                  "disabled": false,
+                  "key": "callback",
+                  "value": "<string>",
+                  "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+                },
+                {
+                  "disabled": false,
+                  "key": "write",
+                  "value": "<boolean>",
+                  "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "month",
+                  "description": "(Required) Month number, 1-12 (zero padding is accepted, e.g. `04`)."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "day",
+                  "description": "(Required) Day-of-month number, 1-31 (zero padding is accepted, e.g. `09`)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f8fb1f2f-61fe-43de-ae1a-4d26102362a7",
+              "name": "Date fact for the supplied month/day.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":month",
+                    ":day",
+                    "date"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "json",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fragment",
+                      "value": "true"
+                    },
+                    {
+                      "key": "notfound",
+                      "value": "floor"
+                    },
+                    {
+                      "key": "default",
+                      "value": "Boring number is boring."
+                    },
+                    {
+                      "key": "callback",
+                      "value": "showNumber"
+                    },
+                    {
+                      "key": "write",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "month",
+                      "description": "(Required) Month number, 1-12 (zero padding is accepted, e.g. `04`)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "day",
+                      "description": "(Required) Day-of-month number, 1-31 (zero padding is accepted, e.g. `09`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"February 29 is the day in 1504 that Christopher Columbus uses his knowledge of a lunar eclipse to convince Native Americans to provide him with supplies.\",\n  \"found\": true,\n  \"number\": 60,\n  \"type\": \"date\",\n  \"year\": \"1504\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a40810b9-2244-483d-bf6a-a6f6aca108ca",
+              "name": "No fact was found for the requested number. The body still contains a plain-text or JSON message; the HTTP status reflects the lookup outcome only when `notfound` is left at its default.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":month",
+                    ":day",
+                    "date"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "json",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fragment",
+                      "value": "true"
+                    },
+                    {
+                      "key": "notfound",
+                      "value": "floor"
+                    },
+                    {
+                      "key": "default",
+                      "value": "Boring number is boring."
+                    },
+                    {
+                      "key": "callback",
+                      "value": "showNumber"
+                    },
+                    {
+                      "key": "write",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "month",
+                      "description": "(Required) Month number, 1-12 (zero padding is accepted, e.g. `04`)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "day",
+                      "description": "(Required) Day-of-month number, 1-31 (zero padding is accepted, e.g. `09`)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"314159265358979 is a boring number.\",\n  \"found\": false,\n  \"number\": 314159265358979,\n  \"type\": \"trivia\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://numbersapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "85074b32-2027-4db8-b3e8-88f36788a14b",
+    "name": "Numbers Batch Date API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Numbers API by David Hu and Mack Duan — a free, community-contributed HTTP API for interesting facts about numbers. Returns trivia, math, date, and year facts as plain text or JSON. Supports random numbers, batches/ranges, JSONP callbacks, document.write embedding, sentence-fragment responses, and configurable not-found behavior.\n\nContact Support:\n Name: Numbers API\n Email: numbersapi@gmail.com",
+      "type": "text/plain"
+    }
+  }
+}

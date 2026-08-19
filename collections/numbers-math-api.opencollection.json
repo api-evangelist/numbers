@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Numbers Batch Math API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Math",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Numbers API Get Math Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/:number/math",
+            "params": [
+              {
+                "name": "number",
+                "value": "42",
+                "type": "path",
+                "description": "Integer to look up, or the keyword `random` to receive a random available fact."
+              },
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "min",
+                "value": "10",
+                "type": "query",
+                "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "max",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a mathematical fact about the supplied integer. Use the keyword `random` to receive a random math fact."
+        },
+        {
+          "info": {
+            "name": "Numbers API Get Random Math Fact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://numbersapi.com/random/math",
+            "params": [
+              {
+                "name": "json",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+              },
+              {
+                "name": "fragment",
+                "value": "true",
+                "type": "query",
+                "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+              },
+              {
+                "name": "notfound",
+                "value": "floor",
+                "type": "query",
+                "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+              },
+              {
+                "name": "default",
+                "value": "Boring number is boring.",
+                "type": "query",
+                "description": "Custom message to return when no fact exists for the requested number."
+              },
+              {
+                "name": "min",
+                "value": "10",
+                "type": "query",
+                "description": "Minimum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "max",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum value (inclusive) for random-number selection. Only meaningful when `number=random`."
+              },
+              {
+                "name": "callback",
+                "value": "showNumber",
+                "type": "query",
+                "description": "JSONP callback function name. The response is wrapped as `<callback>(\"<fact>\")`."
+              },
+              {
+                "name": "write",
+                "value": "true",
+                "type": "query",
+                "description": "Wrap the response in `document.write(\"<fact>\")` so a single `<script src=\"...\">` tag can render the fact inline. Equivalent to `callback=document.write`."
+              }
+            ]
+          },
+          "docs": "Return a random mathematical fact. Equivalent to `/random/math`; an alias for `getMathFact` with `number=random`. Supports `min` and `max` to bound the random integer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,172 @@
+{
+  "item": [
+    {
+      "id": "95b417b4-8652-405b-be80-1e650d731983",
+      "name": "Batch",
+      "description": {
+        "content": "Multiple facts returned in a single request as a JSON map.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c5c3dab3-56a8-4ea6-9e19-2c98e109d66f",
+          "name": "Numbers API Get Batch Facts",
+          "request": {
+            "name": "Numbers API Get Batch Facts",
+            "description": {
+              "content": "Return facts for multiple numbers in a single response. The `numberRange` path segment is a comma-separated list of integers and `min..max` ranges (e.g. `1..3,10`). Responses are always a JSON map from number to fact, of at most 100 numbers. Although the underlying URL pattern is `/{numberRange}` (or `/{numberRange}/{type}`), this operation models the batch case explicitly for tooling clarity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":numberRange",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Fact type to apply to all numbers in the batch."
+                },
+                {
+                  "disabled": false,
+                  "key": "json",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header."
+                },
+                {
+                  "disabled": false,
+                  "key": "fragment",
+                  "value": "<boolean>",
+                  "description": "Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence."
+                },
+                {
+                  "disabled": false,
+                  "key": "notfound",
+                  "value": "default",
+                  "description": "Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up."
+                },
+                {
+                  "disabled": false,
+                  "key": "default",
+                  "value": "<string>",
+                  "description": "Custom message to return when no fact exists for the requested number."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "numberRange",
+                  "description": "(Required) Comma-separated list of integers and inclusive `min..max` ranges."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "40d891e4-73dd-423e-b8cc-80e4da4b3f4d",
+              "name": "JSON map keyed by number. When `json` is set, each value is a `Fact` object; otherwise each value is the plain-text fact string.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":numberRange",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "trivia"
+                    },
+                    {
+                      "key": "json",
+                      "value": "true"
+                    },
+                    {
+                      "key": "fragment",
+                      "value": "true"
+                    },
+                    {
+                      "key": "notfound",
+                      "value": "floor"
+                    },
+                    {
+                      "key": "default",
+                      "value": "Boring number is boring."
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "numberRange",
+                      "description": "(Required) Comma-separated list of integers and inclusive `min..max` ranges."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"1\": \"1 is the number of dimensions of a line.\",\n  \"2\": \"2 is the number of polynucleotide strands in a DNA double helix.\",\n  \"3\": \"3 is the number of sets needed to be won to win the whole match in volleyball.\",\n  \"10\": \"10 is the highest score possible in Olympics gymnastics competitions.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://numbersapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "950a045c-8c95-4bcf-9b17-ce48288729ec",
+    "name": "Numbers Batch API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Numbers API by David Hu and Mack Duan — a free, community-contributed HTTP API for interesting facts about numbers. Returns trivia, math, date, and year facts as plain text or JSON. Supports random numbers, batches/ranges, JSONP callbacks, document.write embedding, sentence-fragment responses, and configurable not-found behavior.\n\nContact Support:\n Name: Numbers API\n Email: numbersapi@gmail.com",
+      "type": "text/plain"
+    }
+  }
+}

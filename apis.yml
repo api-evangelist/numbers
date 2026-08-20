@@ -30,6 +30,13 @@ tags:
   - Trivia
   - Numbers
   - Dates
+  - Open-Source
+tags_raw:
+  - Science And Math
+  - Public APIs
+  - Trivia
+  - Numbers
+  - Dates
   - Open Source
 apis:
 - aid: numbers:numbers-batch-api

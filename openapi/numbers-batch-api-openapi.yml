@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Numbers Batch API
   version: 1.0.0
@@ -67,7 +67,57 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    Fragment:
+      name: fragment
+      in: query
+      required: false
+      description: Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence.
+      schema:
+        type: boolean
+      example: true
+    Json:
+      name: json
+      in: query
+      required: false
+      description: 'Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header.'
+      schema:
+        type: boolean
+      example: true
+    Default:
+      name: default
+      in: query
+      required: false
+      description: Custom message to return when no fact exists for the requested number.
+      schema:
+        type: string
+      example: Boring number is boring.
+    Notfound:
+      name: notfound
+      in: query
+      required: false
+      description: Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up.
+      schema:
+        type: string
+        enum:
+        - default
+        - floor
+        - ceil
+        default: default
+      example: floor
   schemas:
+    BatchFacts:
+      type: object
+      description: JSON map of number-keyed facts returned by a batch request. Each value is either a plain-text fact (default) or a `Fact` object (when `json` is set).
+      additionalProperties:
+        oneOf:
+        - type: string
+        - $ref: '#/components/schemas/Fact'
+      example:
+        '1': 1 is the number of dimensions of a line.
+        '2': 2 is the number of polynucleotide strands in a DNA double helix.
+        '3': 3 is the number of sets needed to be won to win the whole match in volleyball.
+        '10': 10 is the highest score possible in Olympics gymnastics competitions.
     Fact:
       type: object
       description: A single Numbers API fact returned in JSON form.
@@ -106,53 +156,3 @@ components:
           type: string
           description: Year associated with date facts, as a string (e.g. `1969`).
           example: '1969'
-    BatchFacts:
-      type: object
-      description: JSON map of number-keyed facts returned by a batch request. Each value is either a plain-text fact (default) or a `Fact` object (when `json` is set).
-      additionalProperties:
-        oneOf:
-        - type: string
-        - $ref: '#/components/schemas/Fact'
-      example:
-        '1': 1 is the number of dimensions of a line.
-        '2': 2 is the number of polynucleotide strands in a DNA double helix.
-        '3': 3 is the number of sets needed to be won to win the whole match in volleyball.
-        '10': 10 is the highest score possible in Olympics gymnastics competitions.
-  parameters:
-    Default:
-      name: default
-      in: query
-      required: false
-      description: Custom message to return when no fact exists for the requested number.
-      schema:
-        type: string
-      example: Boring number is boring.
-    Notfound:
-      name: notfound
-      in: query
-      required: false
-      description: Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up.
-      schema:
-        type: string
-        enum:
-        - default
-        - floor
-        - ceil
-        default: default
-      example: floor
-    Fragment:
-      name: fragment
-      in: query
-      required: false
-      description: Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence.
-      schema:
-        type: boolean
-      example: true
-    Json:
-      name: json
-      in: query
-      required: false
-      description: 'Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header.'
-      schema:
-        type: boolean
-      example: true

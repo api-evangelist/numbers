@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Numbers Batch Year API
   version: 1.0.0
@@ -102,6 +102,60 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    Fragment:
+      name: fragment
+      in: query
+      required: false
+      description: Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence.
+      schema:
+        type: boolean
+      example: true
+    Write:
+      name: write
+      in: query
+      required: false
+      description: Wrap the response in `document.write("<fact>")` so a single `<script src="...">` tag can render the fact inline. Equivalent to `callback=document.write`.
+      schema:
+        type: boolean
+      example: true
+    Json:
+      name: json
+      in: query
+      required: false
+      description: 'Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header.'
+      schema:
+        type: boolean
+      example: true
+    Default:
+      name: default
+      in: query
+      required: false
+      description: Custom message to return when no fact exists for the requested number.
+      schema:
+        type: string
+      example: Boring number is boring.
+    Notfound:
+      name: notfound
+      in: query
+      required: false
+      description: Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up.
+      schema:
+        type: string
+        enum:
+        - default
+        - floor
+        - ceil
+        default: default
+      example: floor
+    Callback:
+      name: callback
+      in: query
+      required: false
+      description: JSONP callback function name. The response is wrapped as `<callback>("<fact>")`.
+      schema:
+        type: string
+      example: showNumber
   schemas:
     Fact:
       type: object
@@ -141,60 +195,6 @@ components:
           type: string
           description: Year associated with date facts, as a string (e.g. `1969`).
           example: '1969'
-  parameters:
-    Default:
-      name: default
-      in: query
-      required: false
-      description: Custom message to return when no fact exists for the requested number.
-      schema:
-        type: string
-      example: Boring number is boring.
-    Write:
-      name: write
-      in: query
-      required: false
-      description: Wrap the response in `document.write("<fact>")` so a single `<script src="...">` tag can render the fact inline. Equivalent to `callback=document.write`.
-      schema:
-        type: boolean
-      example: true
-    Notfound:
-      name: notfound
-      in: query
-      required: false
-      description: Behavior when no fact exists for the requested number. `default` returns a generic message (overridable with `default`), `floor` rounds down to the nearest number with a fact, and `ceil` rounds up.
-      schema:
-        type: string
-        enum:
-        - default
-        - floor
-        - ceil
-        default: default
-      example: floor
-    Callback:
-      name: callback
-      in: query
-      required: false
-      description: JSONP callback function name. The response is wrapped as `<callback>("<fact>")`.
-      schema:
-        type: string
-      example: showNumber
-    Fragment:
-      name: fragment
-      in: query
-      required: false
-      description: Return the fact as a sentence fragment (lowercase, no terminal punctuation) suitable for embedding in a larger sentence.
-      schema:
-        type: boolean
-      example: true
-    Json:
-      name: json
-      in: query
-      required: false
-      description: 'Return the fact as a JSON object (`{ text, found, number, type, date?, year? }`) instead of plain text. Equivalent to setting the request `Content-Type: application/json` header.'
-      schema:
-        type: boolean
-      example: true
   responses:
     NotFound:
       description: No fact was found for the requested number. The body still contains a plain-text or JSON message; the HTTP status reflects the lookup outcome only when `notfound` is left at its default.
